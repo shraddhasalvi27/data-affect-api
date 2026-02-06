@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "start": "node src/server.ts",
+    "dev": "nodemon --exec ts-node -P tsconfig.json src/server.ts",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/shraddhasalvi27/data-affect-api#readme",
   "dependencies": {
+    "@fastify/autoload": "^6.3.1",
     "@fastify/jwt": "^10.0.0",
     "@fastify/oauth2": "^8.1.2",
     "@prisma/client": "^5.22.0",

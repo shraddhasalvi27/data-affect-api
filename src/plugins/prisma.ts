@@ -1,9 +1,6 @@
-// src/plugins/prisma.ts
 import { PrismaClient } from '@prisma/client';
 import fp from 'fastify-plugin';
 import { FastifyInstance } from 'fastify';
-
-// Use fastify-plugin to make the Prisma client globally available
 export default fp(async (fastify: FastifyInstance, opts: any) => {
   const prisma = new PrismaClient();
 
@@ -12,8 +9,9 @@ export default fp(async (fastify: FastifyInstance, opts: any) => {
 
   // Decorate the Fastify instance with the prisma client
   fastify.decorate('prisma', prisma);
-
-  // Close the database connection when the server stops
+   fastify.log.info("Prisma plugin loaded & DB connected");
+  
+   // Close the database connection when the server stops
   fastify.addHook('onClose', async (instance) => {
     await instance.prisma.$disconnect();
   });
@@ -24,8 +22,4 @@ declare module 'fastify' {
   interface FastifyInstance {
     prisma: PrismaClient;
   }
-  // Optional: augment the Fastify request type if you want to access prisma via req.prisma
-  // interface FastifyRequest {
-  //   prisma: PrismaClient;
-  // }
 }
