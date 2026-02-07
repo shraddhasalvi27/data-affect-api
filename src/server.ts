@@ -13,11 +13,12 @@
   fastify.register(fastifyAutoload, { dir: path.join(baseDir, "plugins"),encapsulate:false });
   fastify.register(fastifyAutoload, {
     dir: path.join(baseDir, "modules"),
+    encapsulate:false
   })
   const start = async () => {
     try {
-      const PORT = Number(process.env.PORT) || 4000
-      await fastify.listen({port:PORT})
+      const PORT = Number(process.env.PORT)
+      await fastify.listen({port:PORT, host: "127.0.0.1"})
       console.log(`server listening on ${PORT}`)
     } catch (err) {
       fastify.log.error(err)
