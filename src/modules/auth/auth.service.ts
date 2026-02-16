@@ -17,18 +17,21 @@ export async function handleGithubLogin(
     where: { githubId: githubUser.id },
     update: {
       avatar: githubUser.avatar_url,
-      username: githubUser.login
+      username: githubUser.login,
+      githubAccessToken: accessToken,
     },
     create: {
       githubId: githubUser.id,
       username: githubUser.login,
       avatar: githubUser.avatar_url,
-      email: githubUser.email
+      email: githubUser.email ?? null,
+      githubAccessToken: accessToken,
     }
   })
 
   const jwt = fastify.jwt.sign({
-    userId: user.id
+    userId: user.id,
+    githubId: user.githubId
   })
 
   return jwt

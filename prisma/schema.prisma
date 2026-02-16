@@ -15,22 +15,29 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  githubId  BigInt   @unique
-  username  String
-  email     String?
-  avatar    String?
-  createdAt DateTime @default(now())
-
-  repos     Repo[]
+  id                String   @id @default(uuid())
+  githubId          BigInt   @unique
+  username          String
+  email             String?
+  avatar            String?
+  profileUrl        String?
+  githubAccessToken String   
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  repos             Repo[]
 }
 
+
 model Repo {
-  id        String   @id @default(uuid())
-  name      String
-  fullName  String
-  githubId  BigInt   @unique
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id])
-  createdAt DateTime @default(now())
+  id            String   @id @default(uuid())
+  name          String
+  fullName      String
+  githubId      BigInt   @unique
+  htmlUrl       String
+  defaultBranch String
+  isPrivate     Boolean
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
