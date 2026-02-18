@@ -26,4 +26,20 @@ export class RepoService {
       )
     )
   }
+  static async getReposByUserId(userId: string) {
+    return prisma.repo.findMany({
+      where: {
+        ownerId: userId
+      },
+      select: {
+        id: true,
+        name: true,
+        fullName: true,
+        htmlUrl: true,
+        defaultBranch: true,
+        isPrivate: true
+      }
+    })
+  }
+
 }

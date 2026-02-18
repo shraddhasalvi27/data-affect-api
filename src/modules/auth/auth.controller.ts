@@ -1,4 +1,4 @@
-import fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { GithubService } from '../github/github.service'
 import { UserService } from '../user/user.service'
 import { RepoService } from '../repo/repo.service'
@@ -22,20 +22,32 @@ export async function githubCallback(
   const githubRepos = await GithubService.getPublicRepos(accessToken)
   // Save repo List in DB
   const repos = await RepoService.saveRepos(githubRepos, user.id)
-  // 5️⃣ Send safe response
-  return reply.send({
-    user: {
-      id: user.id,
-      username: user.username,
-      avatar: githubUser.avatar_url,
-    },
-    repos: repos.map((repo) => ({
-      id: repo.id,
-      name: repo.name,
-      url: repo.htmlUrl,
-      defaultBranch: repo.defaultBranch,
-      isPrivate: repo.isPrivate,
-    }))
-
+  const appToken = await reply.jwtSign({
+    userId: user.id
   })
+  // 5️⃣ Send safe response
+  // return reply.send({
+  //   user: {
+  //     id: user.id,
+  //     username: user.username,
+  //     avatar: githubUser.avatar_url,
+  //   },
+  //   repos: repos.map((repo) => ({
+  //     id: repo.id,
+  //     name: repo.name,
+  //     url: repo.htmlUrl,
+  //     defaultBranch: repo.defaultBranch,
+  //     isPrivate: repo.isPrivate,
+  //   }))
+
+  // })
+  reply
+    .setCookie('token', appToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false, // true in production
+      path: '/'
+    })
+    .redirect('http://127.0.0.1:3000/')
 }
+

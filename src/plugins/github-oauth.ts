@@ -12,6 +12,6 @@ export default fp(async (fastify) => {
       auth: oauthPlugin.GITHUB_CONFIGURATION
     },
     startRedirectPath:'/auth/github',
-    callbackUri: 'http://127.0.0.1:3000/auth/github/callback'
+    callbackUri: 'http://127.0.0.1:5000/auth/github/callback'
   })
 })

@@ -21,4 +21,28 @@ export class UserService {
       },
     })
   }
+
+  // 🔹 Get user by ID (for /users/me)
+  static async getUserById(userId: string) {
+    return prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    })
+  }
+
+  // 🔹 Optional: Safe profile (exclude sensitive fields)
+  static async getSafeUserById(userId: string) {
+    return prisma.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        id: true,
+        username: true,
+        avatar: true
+      }
+    })
+  }
+
 }
