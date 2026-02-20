@@ -10,7 +10,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         const { userId } = request.user as { userId: string }
 
         const user = await UserService.getUserById(userId)
-
+        console.log(user);
         return {
             user: {
                 id: user?.id,
@@ -20,4 +20,11 @@ export default async function authRoutes(fastify: FastifyInstance) {
         }
     })
 
+    fastify.post('/logout', async (request, reply) => {
+        reply.clearCookie('token', {
+            path: '/',
+        })
+
+        return { success: true }
+    })
 }
