@@ -12,6 +12,7 @@ export async function githubCallback(
       .getAccessTokenFromAuthorizationCodeFlow(request)
 
   const accessToken = tokenResponse.token.access_token
+  
   // 2️⃣ Fetch GitHub user info
   const githubUser = await GithubService.getUser(accessToken)
 
@@ -20,27 +21,13 @@ export async function githubCallback(
 
   // 4️⃣ Fetch public repos
   const githubRepos = await GithubService.getPublicRepos(accessToken)
+  
   // Save repo List in DB
   const repos = await RepoService.saveRepos(githubRepos, user.id)
   const appToken = await reply.jwtSign({
     userId: user.id
   })
-  // 5️⃣ Send safe response
-  // return reply.send({
-  //   user: {
-  //     id: user.id,
-  //     username: user.username,
-  //     avatar: githubUser.avatar_url,
-  //   },
-  //   repos: repos.map((repo) => ({
-  //     id: repo.id,
-  //     name: repo.name,
-  //     url: repo.htmlUrl,
-  //     defaultBranch: repo.defaultBranch,
-  //     isPrivate: repo.isPrivate,
-  //   }))
 
-  // })
   reply
     .setCookie('token', appToken, {
       httpOnly: true,

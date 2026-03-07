@@ -1,6 +1,7 @@
 import  {prisma}  from "../../plugins/prisma"
 
 export class UserService {
+  //it will create user in db or update  data
   static async upsertGithubUser(githubUser: any , accessToken:string) {
     return prisma.user.upsert({
       where: {

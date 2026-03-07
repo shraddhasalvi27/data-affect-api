@@ -6,11 +6,8 @@ export default async function authRoutes(fastify: FastifyInstance) {
             await request.jwtVerify()
         }
     }, async (request, reply) => {
-
         const { userId } = request.user as { userId: string }
-
         const user = await UserService.getUserById(userId)
-        console.log(user);
         return {
             user: {
                 id: user?.id,
