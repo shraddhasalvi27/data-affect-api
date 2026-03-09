@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { GithubService } from "../github/github.service";
 import { UserService } from "../user/user.service";
 
+//here getall commits to show on ui operations limit it
 export async function getAllCommits(
     request: FastifyRequest<{
         Params: { owner: string; repo: string };
@@ -27,7 +28,8 @@ export async function getAllCommits(
     return reply.send({ commits });
 }
 
-export async function getAllCommitFiles(
+//get  commit files
+export async function getSingleCommitFiles(
     request: FastifyRequest<{
         Params: { owner: string; repo: string; sha: string };
     }>,
@@ -49,7 +51,8 @@ export async function getAllCommitFiles(
     return reply.send({ files });
 }
 
-export async function getFileContent(
+//get commit files content
+export async function getSingleFileContent(
     request: FastifyRequest<{
         Params: { owner: string; repo: string };
         Querystring: { path: string; ref: string };

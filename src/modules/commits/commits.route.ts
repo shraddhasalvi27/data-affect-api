@@ -1,20 +1,20 @@
 import { FastifyInstance } from "fastify";
-import { getAllCommits, getAllCommitFiles, getFileContent } from "./commits.controller";
+import { getAllCommits, getSingleCommitFiles, getSingleFileContent } from "./commits.controller";
 export default async function commitRoutes(fastify: FastifyInstance) {
-    fastify.get('/repo/commit', {
+    fastify.get('/repo/:owner/:repo/commit', {
         preHandler: async (request, reply) => {
             await request.jwtVerify()
         }
     }, getAllCommits)
-    fastify.get('/repo/commit/files', {
+    fastify.get('/repo/:owner/:repo/:sha/commit/files', {
         preHandler: async (request, reply) => {
             await request.jwtVerify()
         }
-    }, getAllCommitFiles)
-    fastify.get('/repo/commit/content', {
+    }, getSingleCommitFiles)
+    fastify.get('/repo/:owner/:repo/commit/content/{path}?ref={ref}', {
         preHandler: async (request, reply) => {
             await request.jwtVerify()
         }
-    }, getFileContent)
+    }, getSingleFileContent)
 
 }
